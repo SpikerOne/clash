@@ -1,0 +1,40 @@
+mixed-port: 7890
+allow-lan: true
+mode: rule
+log-level: warning
+proxies:
+  - name: CleverCloud-Vmess-US
+    type: vmess
+    server: app-a7bb2fd8-68fb-488f-85c6-8c2b980cb5a1.cleverapps.io
+    port: "443"
+    uuid: 60d95d79-0355-4593-a669-933c29cf9e64
+    alterId: "0"
+    cipher: auto
+    tls: true
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /60d95d79-0355-4593-a669-933c29cf9e64-vmess
+  - name: CleverCloud-Trojan-US
+    server: app-e5ab2a5e-71d4-4e46-9cf8-3479cde29df6.cleverapps.io
+    port: 443
+    type: trojan
+    password: "60d95d79-0355-4593-a669-933c29cf9e64"
+    network: ws
+    skip-cert-verify: false
+    udp: true
+    ws-opts:
+      path: /
+      # headers:
+      #   Host: example.com
+proxy-groups:
+  - name: Proxy
+    type: select
+    proxies:
+      - CleverCloud-Vmess-US
+      - CleverCloud-Trojan-US
+rules:
+  - IP-CIDR,192.168.0.0/16,DIRECT
+  - IP-CIDR,172.16.0.0/12,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT
+  - MATCH,Proxy
