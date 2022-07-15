@@ -2,6 +2,8 @@ mixed-port: 7890
 allow-lan: true
 mode: rule
 log-level: warning
+external-controller: 127.0.0.1:9085
+external-ui: ./public/public
 proxies:
   - name: CleverCloud-Vmess-US
     type: vmess
@@ -16,7 +18,7 @@ proxies:
     ws-opts:
       path: /60d95d79-0355-4593-a669-933c29cf9e64-vmess
   - name: CleverCloud-Trojan-US
-    server: app-e5ab2a5e-71d4-4e46-9cf8-3479cde29df6.cleverapps.io
+    server: app-0e2eadc8-013a-450c-8a17-4c4d31ea724e.cleverapps.io
     port: 443
     type: trojan
     password: "60d95d79-0355-4593-a669-933c29cf9e64"
@@ -24,7 +26,19 @@ proxies:
     skip-cert-verify: false
     udp: true
     ws-opts:
-      path: /
+      path: /60d95d79-0355-4593-a669-933c29cf9e64
+      # headers:
+      #   Host: example.com
+  - name: Render-Trojan-US
+    server: sample-tj.onrender.com
+    port: 443
+    type: trojan
+    password: "60d95d79-0355-4593-a669-933c29cf9e64"
+    network: ws
+    skip-cert-verify: false
+    udp: true
+    ws-opts:
+      path: /60d95d79-0355-4593-a669-933c29cf9e64
       # headers:
       #   Host: example.com
 proxy-groups:
@@ -33,6 +47,7 @@ proxy-groups:
     proxies:
       - CleverCloud-Vmess-US
       - CleverCloud-Trojan-US
+      - Render-Trojan-US
 rules:
   - IP-CIDR,192.168.0.0/16,DIRECT
   - IP-CIDR,172.16.0.0/12,DIRECT
